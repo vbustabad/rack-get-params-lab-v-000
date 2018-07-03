@@ -14,6 +14,19 @@ class Application
     elsif req.path.match(/search/)
       search_term = req.params["q"]
       resp.write handle_search(search_term)
+    elsif req.path.match(/cart/)
+      @@cart.each do |item|
+        resp.write "#{item}\n"
+      end
+    elsif req.path.match(/add/)
+      add_item = req.params["item"]
+
+      if @@items.include?(add_item)
+        resp.write "#{add_item} is one of our items"
+        @@cart << add_item
+      else
+        resp.write "Couldn't find #{search_term}"
+      end
     else
       resp.write "Path Not Found"
     end
